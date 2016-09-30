@@ -28,9 +28,10 @@ public:
     RC openFile      (const string &fileName, FileHandle &fileHandle);    // Open a file
     RC closeFile     (FileHandle &fileHandle);                            // Close a file
 
+    virtual ~PagedFileManager();                                                  // Destructor
+
 protected:
     PagedFileManager();                                                   // Constructor
-    ~PagedFileManager();                                                  // Destructor
 
 private:
     static PagedFileManager *_pf_manager;

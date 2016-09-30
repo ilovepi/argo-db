@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <climits>
+#include <memory>
+#include <bitset>
 
 #include "../rbf/pfm.h"
 
@@ -72,6 +74,8 @@ class RecordBasedFileManager
 public:
   static RecordBasedFileManager* instance();
 
+    std::shared_ptr<PagedFileManager> pfm_ptr;
+
   RC createFile(const string &fileName);
   
   RC destroyFile(const string &fileName);
@@ -108,15 +112,15 @@ public:
 /******************************************************************************************************************************************************************
 IMPORTANT, PLEASE READ: All methods below this comment (other than the constructor and destructor) are NOT required to be implemented for the part 1 of the project
 ******************************************************************************************************************************************************************/
-  RC deleteRecord(FileHandle &fileHandle, const vector<Attribute> &recordDescriptor, const RID &rid);
+    RC deleteRecord(FileHandle &fileHandle, const vector<Attribute> &recordDescriptor, const RID &rid);
 
-  // Assume the RID does not change after an update
-  RC updateRecord(FileHandle &fileHandle, const vector<Attribute> &recordDescriptor, const void *data, const RID &rid);
+      // Assume the RID does not change after an update
+    RC updateRecord(FileHandle &fileHandle, const vector<Attribute> &recordDescriptor, const void *data, const RID &rid);
 
-  RC readAttribute(FileHandle &fileHandle, const vector<Attribute> &recordDescriptor, const RID &rid, const string &attributeName, void *data);
+    RC readAttribute(FileHandle &fileHandle, const vector<Attribute> &recordDescriptor, const RID &rid, const string &attributeName, void *data);
 
-  // Scan returns an iterator to allow the caller to go through the results one by one. 
-  RC scan(FileHandle &fileHandle,
+    // Scan returns an iterator to allow the caller to go through the results one by one.
+    RC scan(FileHandle &fileHandle,
       const vector<Attribute> &recordDescriptor,
       const string &conditionAttribute,
       const CompOp compOp,                  // comparision type such as "<" and "="
@@ -126,9 +130,10 @@ IMPORTANT, PLEASE READ: All methods below this comment (other than the construct
 
 public:
 
+    virtual ~RecordBasedFileManager();
+
 protected:
   RecordBasedFileManager();
-  ~RecordBasedFileManager();
 
 private:
   static RecordBasedFileManager *_rbf_manager;
